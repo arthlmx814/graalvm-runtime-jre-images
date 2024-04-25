@@ -4,7 +4,7 @@
 ##
 
 # Set the target ubuntu version (can be overridden during build with --build-arg UBUNTU_VERSION=<version>)
-ARG UBUNTU_VERSION=jammy
+ARG UBUNTU_VERSION=noble
 
 ## --------------------------------------------------------------
 ## 1. Build the GraalVM 21 JRE Image with jlink from the GraalVM JDK
