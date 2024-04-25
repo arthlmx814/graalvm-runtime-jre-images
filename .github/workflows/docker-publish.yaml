@@ -15,12 +15,14 @@ on:
 env:
   REGISTRY: docker.io
   IMAGE_NAME: arthlmx814/graalvm-jre
+  UBUNTU_VERSION: jammy
 
 jobs:
   build-and-publish-graalvm-jre-21:
     name: Build and Publish GraalVM JRE Images
 
     runs-on: ubuntu-22.04
+
     permissions:
       contents: read
       packages: write
@@ -81,6 +83,8 @@ jobs:
           tags: |
             type=raw,enable=true,priority=100,prefix=,suffix=,value=17
             type=raw,enable=true,priority=200,prefix=,suffix=,value=${{ steps.graalvm-17-latest-release.outputs.JAVA_RELEASE_VERSION }}
+            type=raw,enable=true,priority=100,prefix=,suffix=,value=17-${{ env.UBUNTU_VERSION }}
+            type=raw,enable=true,priority=200,prefix=,suffix=,value=${{ steps.graalvm-17-latest-release.outputs.JAVA_RELEASE_VERSION }}-${{ env.UBUNTU_VERSION }}
 
       # https://github.com/docker/metadata-action
       - name: Extract Docker metadata for GraalVM 21 JRE Images
@@ -95,6 +99,8 @@ jobs:
           tags: |
             type=raw,enable=true,priority=100,prefix=,suffix=,value=21
             type=raw,enable=true,priority=200,prefix=,suffix=,value=${{ steps.graalvm-21-latest-release.outputs.JAVA_RELEASE_VERSION }}
+            type=raw,enable=true,priority=100,prefix=,suffix=,value=21-${{ env.UBUNTU_VERSION }}
+            type=raw,enable=true,priority=200,prefix=,suffix=,value=${{ steps.graalvm-21-latest-release.outputs.JAVA_RELEASE_VERSION }}-${{ env.UBUNTU_VERSION }}
 
       # https://github.com/docker/metadata-action
       - name: Extract Docker metadata for GraalVM 22 JRE Images
@@ -109,6 +115,8 @@ jobs:
           tags: |
             type=raw,enable=true,priority=100,prefix=,suffix=,value=22
             type=raw,enable=true,priority=200,prefix=,suffix=,value=${{ steps.graalvm-22-latest-release.outputs.JAVA_RELEASE_VERSION }}
+            type=raw,enable=true,priority=100,prefix=,suffix=,value=22-${{ env.UBUNTU_VERSION }}
+            type=raw,enable=true,priority=200,prefix=,suffix=,value=${{ steps.graalvm-22-latest-release.outputs.JAVA_RELEASE_VERSION }}-${{ env.UBUNTU_VERSION }}
 
       # https://github.com/docker/build-push-action
       - name: Build and push GraalVM 17 JRE Images
@@ -121,7 +129,7 @@ jobs:
           tags: ${{ steps.docker-meta-graalvm-jre-17.outputs.tags }}
           labels: ${{ steps.docker-meta-graalvm-jre-17.outputs.labels }}
           build-args: |
-            JAVA_RELEASE_VERSION=${{ steps.graalvm-17-latest-release.outputs.JAVA_RELEASE_VERSION }}
+            UBUNTU_VERSION=${{ env.UBUNTU_VERSION }}
 
       # https://github.com/docker/build-push-action
       - name: Build and push GraalVM 21 JRE Images
@@ -134,7 +142,7 @@ jobs:
           tags: ${{ steps.docker-meta-graalvm-jre-21.outputs.tags }}
           labels: ${{ steps.docker-meta-graalvm-jre-21.outputs.labels }}
           build-args: |
-            JAVA_RELEASE_VERSION=${{ steps.graalvm-21-latest-release.outputs.JAVA_RELEASE_VERSION }}
+            UBUNTU_VERSION=${{ env.UBUNTU_VERSION }}
 
       # https://github.com/docker/build-push-action
       - name: Build and push GraalVM 22 JRE Images
@@ -147,4 +155,4 @@ jobs:
           tags: ${{ steps.docker-meta-graalvm-jre-22.outputs.tags }}
           labels: ${{ steps.docker-meta-graalvm-jre-22.outputs.labels }}
           build-args: |
-            JAVA_RELEASE_VERSION=${{ steps.graalvm-22-latest-release.outputs.JAVA_RELEASE_VERSION }}
+            UBUNTU_VERSION=${{ env.UBUNTU_VERSION }}

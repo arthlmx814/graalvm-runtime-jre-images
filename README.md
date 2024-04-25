@@ -8,6 +8,25 @@ The images are using the official [GraalVM Oracle JDK](https://www.graalvm.org/d
 
 The images are based on the official [Ubuntu](https://hub.docker.com/_/ubuntu) images and contains the ca-certificates package to support SSL/TLS connections.
 
+All the images have the java executable in the PATH and the JAVA_HOME environment variable set. The entrypoint is the java executable. You can use it with the [Google JIB](https://github.com/GoogleContainerTools/jib) tool on your maven or gradle project.
+
+## Supported Tags
+
+The images are available on [Docker Hub](https://hub.docker.com/r/arthlmx814/graalvm-jre) with the following tags:
+| Tags | Java Version | Ubuntu Version | Architecture | LTS |
+| ---- | ------------ | -------------- | ------------ | --- |
+| `17`,`17.0.11`,`17-jammy`,`17.0.11-jammy` | 17.0.11+7.1 | 22.04 (Jammy Jellyfish) | x86_64, aarch64 | Yes |
+| `21`,`21.0.3`,`21-jammy`,`21.0.3-jammy` | 21.0.3+7.1 | 22.04 (Jammy Jellyfish) | x86_64, aarch64 | Yes |
+| `22`,`22.0.1`,`22-jammy`,`22.0.1-jammy` | 22.0.1+8.1 | 22.04 (Jammy Jellyfish) | x86_64, aarch64 | No |
+
+## Usage
+
+You can use the GraalVM JRE Docker images like any other Docker image. For example, you can use the following command get the version of the java executable:
+
+```shell
+docker run --rm arthlmx814/graalvm-jre:22 -version
+```
+
 ## FAQ
 
 ### What is GraalVM?
@@ -123,3 +142,13 @@ All my work in this repository is licensed under the [MIT License](https://opens
 This repository is not affiliated with Oracle Corporation.
 
 The project is provided as-is, without any warranty.
+
+## Links
+
+My GitHub repository: <https://github.com/arthlmx814/graalvm-runtime-jre-images>
+My Docker Hub repository: <https://hub.docker.com/r/arthlmx814/graalvm-jre>
+
+Oracle GraalVM: <https://www.graalvm.org/>
+Oracle GraalVM Free Terms and Conditions (GFTC): <https://www.oracle.com/downloads/licenses/graal-free-license.html>
+
+Eclipse Temurin: <https://adoptium.net/temurin/>
