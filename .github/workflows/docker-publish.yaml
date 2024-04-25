@@ -3,7 +3,7 @@
 # Author: Arthur Lemeux
 ##
 
-name: GraalVM Community Edition - Java Runtime Environment - Docker Publish
+name: GraalVM - Java Runtime Environment - Docker Hub Publish
 
 on:
   schedule:
