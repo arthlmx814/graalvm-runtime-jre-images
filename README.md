@@ -2,7 +2,7 @@
 
 [![GraalVM - Java Runtime Environment - Docker Hub Publish](https://github.com/arthlmx814/graalvm-runtime-jre-images/actions/workflows/docker-publish.yaml/badge.svg?branch=main)](https://github.com/arthlmx814/graalvm-runtime-jre-images/actions/workflows/docker-publish.yaml)
 
-This repository contains the source for building GraalVM JRE Docker images as Oracle does not provide official JRE Docker images.
+This repository contains the source for building GraalVM Java JRE Docker images as Oracle does not provide official JRE Docker images.
 
 The images are using the official [GraalVM Oracle JDK](https://www.graalvm.org/downloads/) binaries to build the images with the jlink tool. (<https://www.youtube.com/watch?v=3UCBmdbeYm4>)
 
@@ -21,7 +21,7 @@ The images are available on [Docker Hub](https://hub.docker.com/r/arthlmx814/gra
 
 ## Usage
 
-You can use the GraalVM JRE Docker images like any other Docker image. For example, you can use the following command get the version of the java executable:
+You can use the GraalVM Java JRE Docker images like any other Docker image. For example, you can use the following command get the version of the java executable:
 
 ```shell
 docker run --rm arthlmx814/graalvm-jre:22 -version
@@ -39,7 +39,7 @@ The JIT compiler (JVMCI) in GraalVM is written in Java and can be used by any JV
 
 For more information, see the [GraalVM website](https://www.graalvm.org/) page.
 
-### Why distribute GraalVM  JRE Docker images?
+### Why distribute GraalVM Java JRE Docker images?
 
 #### 1. Because GraalVM provides a high-performance Java runtime
 
@@ -60,23 +60,23 @@ For that reason, some company might need to use the "legacy" JRE with all the mo
 
 For example, the Eclipse Temurin project provides great JRE docker images that I use here to know which modules can be used for a production JRE. (<https://adoptium.net/temurin/>)
 
-### Is the native-image tool included in the GraalVM JRE Docker images?
+### Is the native-image tool included in the GraalVM Java JRE Docker images?
 
 No, the native-image tool is not included in the images. The native-image tool is used to compile Java code ahead-of-time into a native executable. (A binary file that can be executed without the JVM)
 
 Once compiled, you can deploy it on ubuntu-based, alpine, microsoft, or other distributions without the need to install the JVM. (depending on the target platform you choose). Or "scratch" if you use --static --libc=musl options with the native-image tool.
 
-### What kind of modules are included in the GraalVM JRE Docker images?
+### What kind of modules are included in the GraalVM Java JRE Docker images?
 
-Simple answer: The same modules that are included in the Eclipse Temurin JRE Docker images. (<https://hub.docker.com/_/eclipse-temurin>) based on the target java version of the GraalVM JDK I use to build the images.
+Simple answer: The same modules that are included in the Eclipse Temurin JRE Docker images. (<https://hub.docker.com/_/eclipse-temurin>) based on the target java version of the JDK I use to build the images.
 
 But, I only add the jdk.jcmd module to provide support for the jfr and jcmd tools. (for flight recorder, not included in the temurin images) (for more information: <https://www.baeldung.com/java-flight-recorder-monitoring>)
 
-If you have any suggestions or improvements about the modules that should be included in the GraalVM JRE Docker images, feel free to open an issue.
+If you have any suggestions or improvements about the modules that should be included in the GraalVM Java JRE Docker images, feel free to open an issue.
 
-### What architectures are supported by the GraalVM JRE Docker images?
+### What architectures are supported by the GraalVM Java JRE Docker images?
 
-As GraalVM provides binaries for the x86_64 architecture and aarch64 architecture, the GraalVM JRE Docker images are available both for the x86_64 and aarch64 architectures. (linux/amd64 and linux/arm64 respectively)
+As GraalVM provides binaries for the x86_64 architecture and aarch64 architecture, the GraalVM Java JRE Docker images are available both for the x86_64 and aarch64 architectures. (linux/amd64 and linux/arm64 respectively)
 
 ### Do you provide windows or macos images?
 
@@ -86,48 +86,48 @@ Not, I have no plan to provide windows or macos images. (I only provide linux im
 
 I use the ubuntu-based images because they are the most popular images and they are the smallest images that I can use for the glibc-based distributions. (like ubuntu, debian, centos, fedora, etc)
 
-If you know a (secured and official) smaller image that I can use as a base image, please let me know. (debian is higher than ubuntu, alpine is smaller but it is not glibc-based, scratch is the smallest but GraalVM requires glibc and other dependencies)
+If you know a (secured and official) smaller image that I can use as a base image, please let me know. (debian is higher than ubuntu, alpine is smaller but it is not glibc-based, scratch is the smallest but the binaries require glibc and other dependencies)
 
 ### Why not using alpine as based image?
 
-Like I said before, alpine is smaller than ubuntu but it is not glibc-based. (it uses musl as the standard C library) and, for now, the GraalVM binaries do not provide support for musl-based distributions.
+Like I said before, alpine is smaller than ubuntu but it is not glibc-based. (it uses musl as the standard C library) and, for now, the binaries do not provide support for musl-based distributions.
 
 I could use the "gcompat" package to provide glibc compatibility for alpine-based images, but I cannot be 100% sure that it will work as expected.
 
-### What frequency do you update the GraalVM JRE Docker images?
+### What frequency do you update the GraalVM Java JRE Docker images?
 
-I use a GitHub action to build the GraalVM JRE Docker images every day at 00:00 UTC. (if there is a new version of the GraalVM JDK available or if ubuntu updates the base image)
+I use a GitHub action to build the GraalVM Java JRE Docker images every day at 00:00 UTC. (if there is a new version of the GraalVM JDK available or if ubuntu updates the base image)
 
-This is to avoid any security issues that might be present in the GraalVM JDK or in the base image.
+This is to avoid any security issues that might be present in the JDK or in the base image.
 
-My GitHub action fetches automatically the latest version of the GraalVM JDK (17, 21 and 22) and builds them.
+My GitHub action fetches automatically the latest version of the GraalVM Java JDK (17, 21 and 22) and builds them.
 
-### Do you provide a "latest" tag for the GraalVM JRE Docker images?
+### Do you provide a "latest" tag for the GraalVM Java JRE Docker images?
 
 No, bacause there is no sense to use a "latest" tag with java versions.
 Even if the JVM is backward compatible, some applications might not work as expected with a newer version of the JVM.
-The "latest" is the major version of the JDK. (like 17, 21 or 22 in the case of GraalVM)
+The "latest" is the major version of the JDK. (like 17, 21 or 22 in the case of GraalVM Java)
 
-### What versions of GraalVM do you provide?
+### What versions of GraalVM Java do you provide?
 
-I provide the latest and long-term support (LTS) versions of GraalVM.
+I provide the latest and long-term support (LTS) versions of GraalVM Java.
 Today, the LTS versions are 17 and 21. The latest version is 22.
 
-I do not provide the early access (EA) versions of GraalVM because they are not recommended for production use.
+I do not provide the early access (EA) versions of GraalVM Java because they are not recommended for production use.
 
-Be warned that once a version of GraalVM reaches the end of its (free) support, I will no longer provide the GraalVM JRE images for that version but it will still be available in the GitHub repository (but will not receive any updates)
+Be warned that once a version of GraalVM Java reaches the end of its (free) support, I will no longer provide the GraalVM Java JRE images for that version but it will still be available in the DockerHub registry (but will not receive any updates)
 
-### How do you handle the security of the GraalVM JRE Docker images?
+### How do you handle the security of the GraalVM Java JRE Docker images?
 
-I use the official GraalVM binaries to build the GraalVM JRE Docker images and I use the official Ubuntu images as the base image. I do not provide extra security features in the images. In fact, I do not have the capability to provide security updates for the GraalVM binaries because I am not the maintainer of the GraalVM project.
+I use the official GraalVM Java binaries to build the GraalVM Java JRE Docker images and I use the official Ubuntu images as the base image. I do not provide extra security features in the images. In fact, I do not have the capability to provide security updates for the GraalVM binaries because I am not the maintainer of the GraalVM project.
 
 ### Do you provide JDK Docker images?
 
-No, because the official GraalVM JDK Docker images are available on the [Oracle Container Registry](https://container-registry.oracle.com/ords/ocr/ba/graalvm/jdk) and you can use them directly.
+No, because the official GraalVM Java JDK Docker images are available on the [Oracle Container Registry](https://container-registry.oracle.com/ords/ocr/ba/graalvm/jdk) and you can use them directly.
 
 ### Can I make suggestions?
 
-Of course! Feel free to open an issue if you have any suggestions or improvements that you would like to see in the GraalVM JRE Docker images.
+Of course! Feel free to open an issue if you have any suggestions or improvements that you would like to see in the GraalVM Java JRE Docker images.
 
 ## License
 
@@ -146,9 +146,11 @@ The project is provided as-is, without any warranty.
 ## Links
 
 My GitHub repository: <https://github.com/arthlmx814/graalvm-runtime-jre-images>
+
 My Docker Hub repository: <https://hub.docker.com/r/arthlmx814/graalvm-jre>
 
 Oracle GraalVM: <https://www.graalvm.org/>
+
 Oracle GraalVM Free Terms and Conditions (GFTC): <https://www.oracle.com/downloads/licenses/graal-free-license.html>
 
 Eclipse Temurin: <https://adoptium.net/temurin/>
