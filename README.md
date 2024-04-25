@@ -1,5 +1,7 @@
 # GraalVM - Java Runtime Environment (JRE) Docker Images
 
+[![GraalVM Community Edition - Java Runtime Environment - Docker Publish](https://github.com/arthlmx814/graalvm-runtime-jre-images/actions/workflows/docker-publish.yaml/badge.svg)](https://github.com/arthlmx814/graalvm-runtime-jre-images/actions/workflows/docker-publish.yaml)
+
 This repository contains the source for building GraalVM JRE Docker images as Oracle does not provide official JRE Docker images.
 
 The images are using the official [GraalVM Oracle JDK](https://www.graalvm.org/downloads/) binaries to build the images with the jlink tool. (<https://www.youtube.com/watch?v=3UCBmdbeYm4>)
