@@ -98,7 +98,7 @@ I could use the "gcompat" package to provide glibc compatibility for alpine-base
 
 ### What frequency do you update the GraalVM Java JRE Docker images?
 
-I use a GitHub action to build the GraalVM Java JRE Docker images every day at 00:00 UTC. (if there is a new version of the GraalVM JDK available or if ubuntu updates the base image)
+I use a GitHub action to build the GraalVM Java JRE Docker images every week on Sunday at 00:00 UTC. (if there is a new version of the GraalVM JDK available or if ubuntu updates the base image)
 
 This is to avoid any security issues that might be present in the JDK or in the base image.
 
