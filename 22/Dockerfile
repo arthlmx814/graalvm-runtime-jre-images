@@ -23,16 +23,19 @@ RUN apt-get update && \
 # b. Create the /usr/local/lib/jvm directory
 RUN mkdir -p /usr/local/lib/jvm
 
+# c. Set the target java version (must be overridden during build with --build-arg JAVA_VERSION=<version>)
+ARG JAVA_VERSION
+
 # c.1 Download and extract the GraalVM 22 JDK tarball (amd64)
-RUN curl -L "https://download.oracle.com/graalvm/22/latest/graalvm-jdk-22_linux-x64_bin.tar.gz" -o /tmp/graalvm-jdk-22-amd64.tar.gz && \
-    curl -L "https://download.oracle.com/graalvm/22/latest/graalvm-jdk-22_linux-x64_bin.tar.gz.sha256" -o /tmp/graalvm-jdk-22-amd64.tar.gz.sha256 && \
+RUN curl -L "https://download.oracle.com/graalvm/22/archive/graalvm-jdk-${JAVA_VERSION}_linux-x64_bin.tar.gz" -o /tmp/graalvm-jdk-22-amd64.tar.gz && \
+    curl -L "https://download.oracle.com/graalvm/22/archive/graalvm-jdk-${JAVA_VERSION}_linux-x64_bin.tar.gz.sha256" -o /tmp/graalvm-jdk-22-amd64.tar.gz.sha256 && \
     echo "$(cat /tmp/graalvm-jdk-22-amd64.tar.gz.sha256)  /tmp/graalvm-jdk-22-amd64.tar.gz" | sha256sum -c && \
     tar -xzf /tmp/graalvm-jdk-22-amd64.tar.gz -C /tmp && \
     rm /tmp/graalvm-jdk-22-amd64.tar.gz* && \
     mv /tmp/graalvm-jdk-* /usr/local/lib/jvm/graalvm-jdk-22-amd64
 # c.2 Download and extract the GraalVM 22 JDK tarball (arm64)
-RUN curl -L "https://download.oracle.com/graalvm/22/latest/graalvm-jdk-22_linux-aarch64_bin.tar.gz" -o /tmp/graalvm-jdk-22-arm64.tar.gz && \
-    curl -L "https://download.oracle.com/graalvm/22/latest/graalvm-jdk-22_linux-aarch64_bin.tar.gz.sha256" -o /tmp/graalvm-jdk-22-arm64.tar.gz.sha256 && \
+RUN curl -L "https://download.oracle.com/graalvm/22/archive/graalvm-jdk-${JAVA_VERSION}_linux-aarch64_bin.tar.gz" -o /tmp/graalvm-jdk-22-arm64.tar.gz && \
+    curl -L "https://download.oracle.com/graalvm/22/archive/graalvm-jdk-${JAVA_VERSION}_linux-aarch64_bin.tar.gz.sha256" -o /tmp/graalvm-jdk-22-arm64.tar.gz.sha256 && \
     echo "$(cat /tmp/graalvm-jdk-22-arm64.tar.gz.sha256)  /tmp/graalvm-jdk-22-arm64.tar.gz" | sha256sum -c && \
     tar -xzf /tmp/graalvm-jdk-22-arm64.tar.gz -C /tmp && \
     rm /tmp/graalvm-jdk-22-arm64.tar.gz* && \
@@ -68,7 +71,7 @@ RUN jlink \
 ## --------------------------------------------------------------
 # Note: As a final stage, we will use the ubuntu:${UBUNTU_VERSION} version with the TARGET platform to create the final image.
 #       The stage will automatically use the right created JRE image from the previous stage.
-FROM --platform=$TARGETPLATFORM ubuntu:${UBUNTU_VERSION} AS graalvm-jre
+FROM ubuntu:${UBUNTU_VERSION} AS graalvm-jre
 
 # a. Update system and install ca-certificates and perform cleanup
 RUN apt-get update && \
@@ -82,8 +85,5 @@ COPY --from=graalvm-jre-builder /graalvm-jre-22 /usr/local/lib/jvm/graalvm-jre-2
 ENV JAVA_HOME=/usr/local/lib/jvm/graalvm-jre-22
 ENV PATH=$JAVA_HOME/bin:$PATH
 
-# d. Check if the Java executable is working
-RUN java -version
-
-# e. Set the entrypoint to java
+# d. Set the entrypoint to java
 ENTRYPOINT ["java"]

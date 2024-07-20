@@ -1,7 +1,5 @@
 # GraalVM - Java Runtime Environment (JRE) Docker Images
 
-[![GraalVM - Java Runtime Environment - Docker Hub Publish](https://github.com/arthlmx814/graalvm-runtime-jre-images/actions/workflows/docker-publish.yaml/badge.svg?branch=main)](https://github.com/arthlmx814/graalvm-runtime-jre-images/actions/workflows/docker-publish.yaml)
-
 This repository contains the source for building GraalVM Java JRE Docker images as Oracle does not provide official JRE Docker images.
 
 The images are using the official [GraalVM Oracle JDK](https://www.graalvm.org/downloads/) binaries to build the images with the jlink tool. (<https://www.youtube.com/watch?v=3UCBmdbeYm4>)
@@ -15,11 +13,9 @@ All the images have the java executable in the PATH and the JAVA_HOME environmen
 The images are available on [Docker Hub](https://hub.docker.com/r/arthlmx814/graalvm-jre) with the following tags:
 | Tags | Java Version | Ubuntu Version | Architecture | LTS |
 | ---- | ------------ | -------------- | ------------ | --- |
-| `17`,`17.0.12`,`17-noble`,`17.0.12-noble`,`17-jammy`,`17.0.12-jammy` | 17.0.12+8.1 | 24.04 (Noble Numbat), 22.04 (Jammy Jellyfish) | x86_64, aarch64 | Yes |
-| `21`,`21.0.4`,`21-noble`,`21.0.4-noble`,`21-jammy`,`21.0.4-jammy` | 21.0.4+8.1 | 24.04 (Noble Numbat), 22.04 (Jammy Jellyfish) | x86_64, aarch64 | Yes |
-| `22`,`22.0.2`,`22-noble`,`22.0.2-noble`,`22-jammy`,`22.0.2-jammy` | 22.0.2+9.1 | 24.04 (Noble Numbat), 22.04 (Jammy Jellyfish) | x86_64, aarch64 | No |
-
-The tags without the suffix `-jammy` or `-noble` are based on the latest Ubuntu LTS version (Ubuntu 24.04) and the tags with the suffix `-jammy` or `-noble` are based on their respective Ubuntu version.
+| `17`,`17.0.12` | 17.0.12+8.1 | 24.04 (Noble Numbat) | x86_64, aarch64 | Yes |
+| `21`,`21.0.4` | 21.0.4+8.1 | 24.04 (Noble Numbat) | x86_64, aarch64 | Yes |
+| `22`,`22.0.2` | 22.0.2+9.1 | 24.04 (Noble Numbat) | x86_64, aarch64 | No |
 
 ## Usage
 
@@ -98,11 +94,11 @@ I could use the "gcompat" package to provide glibc compatibility for alpine-base
 
 ### What frequency do you update the GraalVM Java JRE Docker images?
 
-I use a GitHub action to build the GraalVM Java JRE Docker images every week on Sunday at 00:00 UTC. (if there is a new version of the GraalVM JDK available or if ubuntu updates the base image)
+I use a Jenkins pipeline to build the GraalVM Java JRE Docker images every week on Sunday at 00:00 UTC. (if there is a new version of the GraalVM JDK available or if ubuntu updates the base image)
 
 This is to avoid any security issues that might be present in the JDK or in the base image.
 
-My GitHub action fetches automatically the latest version of the GraalVM Java JDK (17, 21 and 22) and builds them.
+My Jenkins pipeline fetches automatically the latest version of the GraalVM Java JDK (17, 21 and 22) and builds them.
 
 ### Do you provide a "latest" tag for the GraalVM Java JRE Docker images?
 
