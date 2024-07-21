@@ -118,6 +118,9 @@ pipeline {
         stage('Build and Publish GraalVM JRE Images') {
             when {
                 anyOf {
+                    expression {
+                        env.BUILD_NUMBER == '1' // First build
+                    }
                     changeset 'Jenkinsfile' // Jenkinsfile changes
                     changeset '**/Dockerfile' // Dockerfile changes
                     changeset '**/jmods.list' // jmods.list changes
