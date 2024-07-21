@@ -1,5 +1,6 @@
 /*
- * Jenkinsfile for building and publishing GraalVM JRE images
+ * Jenkinsfile for building and publishing GraalVM JRE images.
+ * URL: https://jenkins.arthlmx.fr
  */
 
 /* Functions definition */
@@ -51,7 +52,7 @@ def buildGraalVMJreImage(String javaVersion) {
                     --progress=plain \
                     --platform=linux/arm64,linux/amd64 \
                     --build-arg JAVA_VERSION=${javaFullVersion} \
-                    --output=type=image,push=true \
+                    --output=type=image,push=true,registry.insecure=true \
                     ${labels.collect { "--label=${it}" }.join(' ')} \
                     ./${javaVersion}
             """
@@ -72,6 +73,14 @@ pipeline {
     options {
         // Enable timestamps for the console output
         timestamps()
+        // Add a timeout for the whole pipeline (1 hour)
+        timeout(time: 1, unit: 'HOURS')
+        // Do not allow concurrent builds
+        disableConcurrentBuilds(abortPrevious: true)
+        // Rotate the build logs to keep the last 20 builds
+        buildDiscarder(logRotator(numToKeepStr: '20'))
+        // Do not automatically checkout the code
+        skipDefaultCheckout()
     }
 
     environment {
@@ -83,6 +92,8 @@ pipeline {
         DOCKER_REGISTRY = 'https://registry.hub.docker.com'
         // Set the Docker image name
         IMAGE_NAME = 'arthlmx814/graalvm-jre'
+        // Set the senders email
+        MAIL_TO = 'notify-arthlmx814@jenkins.arthlmx.fr'
     }
 
     parameters {
@@ -105,6 +116,15 @@ pipeline {
             }
         }
         stage('Build and Publish GraalVM JRE Images') {
+            when {
+                anyOf {
+                    changeset '/Jenkinsfile' // Jenkinsfile changes
+                    changeset '**/Dockerfile' // Dockerfile changes
+                    changeset '**/jmods.list' // jmods.list changes
+                    triggeredBy 'TimerTrigger' // Triggered by a scheduled build
+                    triggeredBy 'UserIdCause' // Triggered by a manual build
+                }
+            }
             stages {
                 stage('GraalVM 17') {
                     steps {
@@ -126,9 +146,32 @@ pipeline {
     }
 
     post {
-        always {
-            // Clean up the workspace
-            cleanWs()
+        fixed {
+            // Send an email notification on fixed builds
+            mail(
+                to: env.MAIL_TO,
+                subject: "<${env.JOB_NAME}> - Build #${env.BUILD_NUMBER} - FIXED",
+                body: """
+                    <p>Build #${env.BUILD_NUMBER} of ${env.JOB_NAME} has been fixed.</p>
+                    <br>
+                    <p>Check the build details at <a href="${env.BUILD_URL}">${env.BUILD_URL}</a>.</p>
+                """,
+                mimeType: 'text/html'
+            )
+        }
+
+        failure {
+            // Send an email notification on failed builds
+            mail(
+                to: env.MAIL_TO,
+                subject: "<${env.JOB_NAME}> - Build #${env.BUILD_NUMBER} - FAILURE",
+                body: """
+                    <p>Build #${env.BUILD_NUMBER} of ${env.JOB_NAME} has failed.</p>
+                    <br>
+                    <p>Check the build details at <a href="${env.BUILD_URL}">${env.BUILD_URL}</a>.</p>
+                """,
+                mimeType: 'text/html'
+            )
         }
     }
 }
