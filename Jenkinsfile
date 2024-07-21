@@ -118,7 +118,7 @@ pipeline {
         stage('Build and Publish GraalVM JRE Images') {
             when {
                 anyOf {
-                    changeset '/Jenkinsfile' // Jenkinsfile changes
+                    changeset 'Jenkinsfile' // Jenkinsfile changes
                     changeset '**/Dockerfile' // Dockerfile changes
                     changeset '**/jmods.list' // jmods.list changes
                     triggeredBy 'TimerTrigger' // Triggered by a scheduled build
