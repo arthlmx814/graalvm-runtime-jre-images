@@ -1,6 +1,6 @@
 /*
  * Jenkinsfile for building and publishing GraalVM JRE images.
- * URL: https://jenkins.arthlmx.fr
+ * URL: https://jenkins.arthlmx.fr/job/arthlmx814/job/graalvm-runtime-jre-images/
  */
 
 /* Functions definition */
