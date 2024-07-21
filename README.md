@@ -1,5 +1,7 @@
 # GraalVM - Java Runtime Environment (JRE) Docker Images
 
+[![Build Status](https://jenkins.arthlmx.fr/job/arthlmx814/job/graalvm-runtime-jre-images/badge/icon?subject=GraalVM%20Java%20JRE%20Docker%20Images%20Pipeline)](https://jenkins.arthlmx.fr/job/arthlmx814/job/graalvm-runtime-jre-images/)
+
 This repository contains the source for building GraalVM Java JRE Docker images as Oracle does not provide official JRE Docker images.
 
 The images are using the official [GraalVM Oracle JDK](https://www.graalvm.org/downloads/) binaries to build the images with the jlink tool. (<https://www.youtube.com/watch?v=3UCBmdbeYm4>)
@@ -99,6 +101,8 @@ I use a Jenkins pipeline to build the GraalVM Java JRE Docker images every week 
 This is to avoid any security issues that might be present in the JDK or in the base image.
 
 My Jenkins pipeline fetches automatically the latest version of the GraalVM Java JDK (17, 21 and 22) and builds them.
+
+You can go to the [jenkins pipeline](https://jenkins.arthlmx.fr/job/arthlmx814/job/graalvm-runtime-jre-images/) page to see the status of the pipeline and the logs of the builds.
 
 ### Do you provide a "latest" tag for the GraalVM Java JRE Docker images?
 
