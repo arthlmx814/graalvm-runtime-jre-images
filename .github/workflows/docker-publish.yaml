@@ -171,6 +171,7 @@ jobs:
           labels: ${{ steps.docker-meta-graalvm-jre-17-jammy.outputs.labels }}
           build-args: |
             UBUNTU_VERSION=jammy
+            JAVA_VERSION=${{ steps.graalvm-17-latest-release.outputs.JAVA_RELEASE_VERSION }}
 
       # https://github.com/docker/build-push-action
       - name: Build and push GraalVM 17 JRE Images (Ubuntu 24.04)
@@ -184,6 +185,7 @@ jobs:
           labels: ${{ steps.docker-meta-graalvm-jre-17-noble.outputs.labels }}
           build-args: |
             UBUNTU_VERSION=noble
+            JAVA_VERSION=${{ steps.graalvm-17-latest-release.outputs.JAVA_RELEASE_VERSION }}
 
       # https://github.com/docker/build-push-action
       - name: Build and push GraalVM 21 JRE Images (Ubuntu 22.04)
@@ -197,6 +199,7 @@ jobs:
           labels: ${{ steps.docker-meta-graalvm-jre-21-jammy.outputs.labels }}
           build-args: |
             UBUNTU_VERSION=jammy
+            JAVA_VERSION=${{ steps.graalvm-21-latest-release.outputs.JAVA_RELEASE_VERSION }}
 
       # https://github.com/docker/build-push-action
       - name: Build and push GraalVM 21 JRE Images (Ubuntu 24.04)
@@ -210,6 +213,7 @@ jobs:
           labels: ${{ steps.docker-meta-graalvm-jre-21-noble.outputs.labels }}
           build-args: |
             UBUNTU_VERSION=noble
+            JAVA_VERSION=${{ steps.graalvm-21-latest-release.outputs.JAVA_RELEASE_VERSION }}
 
       # https://github.com/docker/build-push-action
       - name: Build and push GraalVM 23 JRE Images (Ubuntu 22.04)
@@ -223,6 +227,7 @@ jobs:
           labels: ${{ steps.docker-meta-graalvm-jre-23-jammy.outputs.labels }}
           build-args: |
             UBUNTU_VERSION=jammy
+            JAVA_VERSION=${{ steps.graalvm-23-latest-release.outputs.JAVA_RELEASE_VERSION }}
 
       # https://github.com/docker/build-push-action
       - name: Build and push GraalVM 23 JRE Images (Ubuntu 24.04)
@@ -236,3 +241,4 @@ jobs:
           labels: ${{ steps.docker-meta-graalvm-jre-23-noble.outputs.labels }}
           build-args: |
             UBUNTU_VERSION=noble
+            JAVA_VERSION=${{ steps.graalvm-23-latest-release.outputs.JAVA_RELEASE_VERSION }}
