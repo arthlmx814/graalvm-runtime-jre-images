@@ -1,13 +1,13 @@
 ##
-# GraalVM 22 Java Runtime Environment for cloud-ready and deployment-friendly Docker images
-# Author: Arthur Lemeux
+# GraalVM 23 Java Runtime Environment for cloud-ready and deployment-friendly Docker images
+# Author: Arthur Lemeux Martelet
 ##
 
 # Set the target ubuntu version (can be overridden during build with --build-arg UBUNTU_VERSION=<version>)
 ARG UBUNTU_VERSION=noble
 
 ## --------------------------------------------------------------
-## 1. Build the GraalVM 22 JRE Image with jlink from the GraalVM JDK
+## 1. Build the GraalVM 23 JRE Image with jlink from the GraalVM JDK
 ## --------------------------------------------------------------
 # Note: the --platform flag is used to tell buildx to use the HOST platform for multi-platform builds
 #       and not using the TARGET platform when building the image. (e.g., --platform=linux/amd64 with buildx)
@@ -23,26 +23,29 @@ RUN apt-get update && \
 # b. Create the /usr/local/lib/jvm directory
 RUN mkdir -p /usr/local/lib/jvm
 
-# c.1 Download and extract the GraalVM 22 JDK tarball (amd64)
-RUN curl -L "https://download.oracle.com/graalvm/22/latest/graalvm-jdk-22_linux-x64_bin.tar.gz" -o /tmp/graalvm-jdk-22-amd64.tar.gz && \
-    curl -L "https://download.oracle.com/graalvm/22/latest/graalvm-jdk-22_linux-x64_bin.tar.gz.sha256" -o /tmp/graalvm-jdk-22-amd64.tar.gz.sha256 && \
-    echo "$(cat /tmp/graalvm-jdk-22-amd64.tar.gz.sha256)  /tmp/graalvm-jdk-22-amd64.tar.gz" | sha256sum -c && \
-    tar -xzf /tmp/graalvm-jdk-22-amd64.tar.gz -C /tmp && \
-    rm /tmp/graalvm-jdk-22-amd64.tar.gz* && \
-    mv /tmp/graalvm-jdk-* /usr/local/lib/jvm/graalvm-jdk-22-amd64
-# c.2 Download and extract the GraalVM 22 JDK tarball (arm64)
-RUN curl -L "https://download.oracle.com/graalvm/22/latest/graalvm-jdk-22_linux-aarch64_bin.tar.gz" -o /tmp/graalvm-jdk-22-arm64.tar.gz && \
-    curl -L "https://download.oracle.com/graalvm/22/latest/graalvm-jdk-22_linux-aarch64_bin.tar.gz.sha256" -o /tmp/graalvm-jdk-22-arm64.tar.gz.sha256 && \
-    echo "$(cat /tmp/graalvm-jdk-22-arm64.tar.gz.sha256)  /tmp/graalvm-jdk-22-arm64.tar.gz" | sha256sum -c && \
-    tar -xzf /tmp/graalvm-jdk-22-arm64.tar.gz -C /tmp && \
-    rm /tmp/graalvm-jdk-22-arm64.tar.gz* && \
-    mv /tmp/graalvm-jdk-* /usr/local/lib/jvm/graalvm-jdk-22-arm64
+# c. Set the target java version (must be overridden during build with --build-arg JAVA_VERSION=<version>)
+ARG JAVA_VERSION
+
+# c.1 Download and extract the GraalVM 23 JDK tarball (amd64)
+RUN curl -L "https://download.oracle.com/graalvm/23/archive/graalvm-jdk-${JAVA_VERSION}_linux-x64_bin.tar.gz" -o /tmp/graalvm-jdk-23-amd64.tar.gz && \
+    curl -L "https://download.oracle.com/graalvm/23/archive/graalvm-jdk-${JAVA_VERSION}_linux-x64_bin.tar.gz.sha256" -o /tmp/graalvm-jdk-23-amd64.tar.gz.sha256 && \
+    echo "$(cat /tmp/graalvm-jdk-23-amd64.tar.gz.sha256)  /tmp/graalvm-jdk-23-amd64.tar.gz" | sha256sum -c && \
+    tar -xzf /tmp/graalvm-jdk-23-amd64.tar.gz -C /tmp && \
+    rm /tmp/graalvm-jdk-23-amd64.tar.gz* && \
+    mv /tmp/graalvm-jdk-* /usr/local/lib/jvm/graalvm-jdk-23-amd64
+# c.2 Download and extract the GraalVM 23 JDK tarball (arm64)
+RUN curl -L "https://download.oracle.com/graalvm/23/archive/graalvm-jdk-${JAVA_VERSION}_linux-aarch64_bin.tar.gz" -o /tmp/graalvm-jdk-23-arm64.tar.gz && \
+    curl -L "https://download.oracle.com/graalvm/23/archive/graalvm-jdk-${JAVA_VERSION}_linux-aarch64_bin.tar.gz.sha256" -o /tmp/graalvm-jdk-23-arm64.tar.gz.sha256 && \
+    echo "$(cat /tmp/graalvm-jdk-23-arm64.tar.gz.sha256)  /tmp/graalvm-jdk-23-arm64.tar.gz" | sha256sum -c && \
+    tar -xzf /tmp/graalvm-jdk-23-arm64.tar.gz -C /tmp && \
+    rm /tmp/graalvm-jdk-23-arm64.tar.gz* && \
+    mv /tmp/graalvm-jdk-* /usr/local/lib/jvm/graalvm-jdk-23-arm64
 
 # d. Get the BUILDARCH (automatically set by buildx)
 ARG BUILDARCH
 
 # e. Set the JAVA_HOME and PATH environment variables depending on the HOST platform
-ENV JAVA_HOME=/usr/local/lib/jvm/graalvm-jdk-22-${BUILDARCH}
+ENV JAVA_HOME=/usr/local/lib/jvm/graalvm-jdk-23-${BUILDARCH}
 ENV PATH=$JAVA_HOME/bin:$PATH
 
 # f. Copy the jmods.list file to get the list of modules to include in the custom JRE image
@@ -53,22 +56,22 @@ COPY jmods.list /tmp/jmods.list
 # g. Get the TARGETARCH (automatically set by buildx)
 ARG TARGETARCH
 
-# h. Run jlink to create a custom JRE image of GraalVM 22 to the TARGET platform
+# h. Run jlink to create a custom JRE image of GraalVM 23 to the TARGET platform
 RUN jlink \
     --add-modules "$(cat /tmp/jmods.list)" \
-    --module-path "/usr/local/lib/jvm/graalvm-jdk-22-${TARGETARCH}/jmods" \
+    --module-path "/usr/local/lib/jvm/graalvm-jdk-23-${TARGETARCH}/jmods" \
     --compress zip-6 \
     --no-header-files \
     --no-man-pages \
     --strip-debug \
-    --output /graalvm-jre-22
+    --output /graalvm-jre-23
 
 ## --------------------------------------------------------------
-## 2. Build the final GraalVM 22 JRE Image
+## 2. Build the final GraalVM 23 JRE Image
 ## --------------------------------------------------------------
 # Note: As a final stage, we will use the ubuntu:${UBUNTU_VERSION} version with the TARGET platform to create the final image.
 #       The stage will automatically use the right created JRE image from the previous stage.
-FROM --platform=$TARGETPLATFORM ubuntu:${UBUNTU_VERSION} AS graalvm-jre
+FROM ubuntu:${UBUNTU_VERSION} AS graalvm-jre
 
 # a. Update system and install ca-certificates and perform cleanup
 RUN apt-get update && \
@@ -76,14 +79,11 @@ RUN apt-get update && \
     rm -rf /var/lib/apt/lists/* /var/cache/apt/*
 
 # b. Copy the custom JRE image from the previous stage
-COPY --from=graalvm-jre-builder /graalvm-jre-22 /usr/local/lib/jvm/graalvm-jre-22
+COPY --from=graalvm-jre-builder /graalvm-jre-23 /usr/local/lib/jvm/graalvm-jre-23
 
 # c. Set the JAVA_HOME and PATH environment variables
-ENV JAVA_HOME=/usr/local/lib/jvm/graalvm-jre-22
+ENV JAVA_HOME=/usr/local/lib/jvm/graalvm-jre-23
 ENV PATH=$JAVA_HOME/bin:$PATH
 
-# d. Check if the Java executable is working
-RUN java -version
-
-# e. Set the entrypoint to java
+# d. Set the entrypoint to java
 ENTRYPOINT ["java"]

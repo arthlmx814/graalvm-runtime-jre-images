@@ -1,13 +1,13 @@
 ##
 # GitHub Action to build GraalVM JRE Images
-# Author: Arthur Lemeux
+# Author: Arthur Lemeux Martelet
 ##
 
 name: GraalVM - Java Runtime Environment - Docker Hub Publish
 
 on:
   schedule:
-    - cron: '0 0 * * 0'
+    - cron: "0 0 * * 0"
   push:
     branches:
       - main
@@ -20,7 +20,7 @@ jobs:
   build-and-publish-graalvm-jre-21:
     name: Build and Publish GraalVM JRE Images
 
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04
 
     permissions:
       contents: read
@@ -62,12 +62,12 @@ jobs:
           docker run --rm container-registry.oracle.com/graalvm/jdk:21 /bin/bash -c 'cat $JAVA_HOME/release' | grep "JAVA_VERSION=" | cut -d "=" -f 2 | tr -d '[:space:]' | tr -d '"' > /tmp/graalvm-21-latest-release
           echo "JAVA_RELEASE_VERSION=$(cat /tmp/graalvm-21-latest-release)" >> "$GITHUB_OUTPUT"
 
-      # Get the latest GraalVM 22 Release from GitHub
-      - name: Get GraalVM 22 Latest Release
-        id: graalvm-22-latest-release
+      # Get the latest GraalVM 23 Release from GitHub
+      - name: Get GraalVM 23 Latest Release
+        id: graalvm-23-latest-release
         run: |
-          docker run --rm container-registry.oracle.com/graalvm/jdk:22 /bin/bash -c 'cat $JAVA_HOME/release' | grep "JAVA_VERSION=" | cut -d "=" -f 2 | tr -d '[:space:]' | tr -d '"' > /tmp/graalvm-22-latest-release
-          echo "JAVA_RELEASE_VERSION=$(cat /tmp/graalvm-22-latest-release)" >> "$GITHUB_OUTPUT"
+          docker run --rm container-registry.oracle.com/graalvm/jdk:23 /bin/bash -c 'cat $JAVA_HOME/release' | grep "JAVA_VERSION=" | cut -d "=" -f 2 | tr -d '[:space:]' | tr -d '"' > /tmp/graalvm-23-latest-release
+          echo "JAVA_RELEASE_VERSION=$(cat /tmp/graalvm-23-latest-release)" >> "$GITHUB_OUTPUT"
 
       # https://github.com/docker/metadata-action
       - name: Extract Docker metadata for GraalVM 17 JRE Images (Ubuntu 22.04)
@@ -130,8 +130,8 @@ jobs:
             type=raw,enable=true,priority=200,prefix=,suffix=,value=${{ steps.graalvm-21-latest-release.outputs.JAVA_RELEASE_VERSION }}-noble
 
       # https://github.com/docker/metadata-action
-      - name: Extract Docker metadata for GraalVM 22 JRE Images (Ubuntu 22.04)
-        id: docker-meta-graalvm-jre-22-jammy
+      - name: Extract Docker metadata for GraalVM 23 JRE Images (Ubuntu 22.04)
+        id: docker-meta-graalvm-jre-23-jammy
         uses: docker/metadata-action@v5
         with:
           images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
@@ -140,12 +140,12 @@ jobs:
             prefix=
             suffix=
           tags: |
-            type=raw,enable=true,priority=100,prefix=,suffix=,value=22-jammy
-            type=raw,enable=true,priority=200,prefix=,suffix=,value=${{ steps.graalvm-22-latest-release.outputs.JAVA_RELEASE_VERSION }}-jammy
+            type=raw,enable=true,priority=100,prefix=,suffix=,value=23-jammy
+            type=raw,enable=true,priority=200,prefix=,suffix=,value=${{ steps.graalvm-23-latest-release.outputs.JAVA_RELEASE_VERSION }}-jammy
 
       # https://github.com/docker/metadata-action
-      - name: Extract Docker metadata for GraalVM 22 JRE Images (Ubuntu 24.04)
-        id: docker-meta-graalvm-jre-22-noble
+      - name: Extract Docker metadata for GraalVM 23 JRE Images (Ubuntu 24.04)
+        id: docker-meta-graalvm-jre-23-noble
         uses: docker/metadata-action@v5
         with:
           images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
@@ -154,10 +154,10 @@ jobs:
             prefix=
             suffix=
           tags: |
-            type=raw,enable=true,priority=100,prefix=,suffix=,value=22
-            type=raw,enable=true,priority=200,prefix=,suffix=,value=${{ steps.graalvm-22-latest-release.outputs.JAVA_RELEASE_VERSION }}
-            type=raw,enable=true,priority=100,prefix=,suffix=,value=22-noble
-            type=raw,enable=true,priority=200,prefix=,suffix=,value=${{ steps.graalvm-22-latest-release.outputs.JAVA_RELEASE_VERSION }}-noble
+            type=raw,enable=true,priority=100,prefix=,suffix=,value=23
+            type=raw,enable=true,priority=200,prefix=,suffix=,value=${{ steps.graalvm-23-latest-release.outputs.JAVA_RELEASE_VERSION }}
+            type=raw,enable=true,priority=100,prefix=,suffix=,value=23-noble
+            type=raw,enable=true,priority=200,prefix=,suffix=,value=${{ steps.graalvm-23-latest-release.outputs.JAVA_RELEASE_VERSION }}-noble
 
       # https://github.com/docker/build-push-action
       - name: Build and push GraalVM 17 JRE Images (Ubuntu 22.04)
@@ -212,27 +212,27 @@ jobs:
             UBUNTU_VERSION=noble
 
       # https://github.com/docker/build-push-action
-      - name: Build and push GraalVM 22 JRE Images (Ubuntu 22.04)
-        id: build-and-push-graalvm-jre-22-jammy
+      - name: Build and push GraalVM 23 JRE Images (Ubuntu 22.04)
+        id: build-and-push-graalvm-jre-23-jammy
         uses: docker/build-push-action@v5
         with:
-          context: ./22
+          context: ./23
           platforms: linux/amd64,linux/arm64
           push: true
-          tags: ${{ steps.docker-meta-graalvm-jre-22-jammy.outputs.tags }}
-          labels: ${{ steps.docker-meta-graalvm-jre-22-jammy.outputs.labels }}
+          tags: ${{ steps.docker-meta-graalvm-jre-23-jammy.outputs.tags }}
+          labels: ${{ steps.docker-meta-graalvm-jre-23-jammy.outputs.labels }}
           build-args: |
             UBUNTU_VERSION=jammy
 
       # https://github.com/docker/build-push-action
-      - name: Build and push GraalVM 22 JRE Images (Ubuntu 24.04)
-        id: build-and-push-graalvm-jre-22-noble
+      - name: Build and push GraalVM 23 JRE Images (Ubuntu 24.04)
+        id: build-and-push-graalvm-jre-23-noble
         uses: docker/build-push-action@v5
         with:
-          context: ./22
+          context: ./23
           platforms: linux/amd64,linux/arm64
           push: true
-          tags: ${{ steps.docker-meta-graalvm-jre-22-noble.outputs.tags }}
-          labels: ${{ steps.docker-meta-graalvm-jre-22-noble.outputs.labels }}
+          tags: ${{ steps.docker-meta-graalvm-jre-23-noble.outputs.tags }}
+          labels: ${{ steps.docker-meta-graalvm-jre-23-noble.outputs.labels }}
           build-args: |
             UBUNTU_VERSION=noble

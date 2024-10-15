@@ -15,9 +15,9 @@ All the images have the java executable in the PATH and the JAVA_HOME environmen
 The images are available on [Docker Hub](https://hub.docker.com/r/arthlmx814/graalvm-jre) with the following tags:
 | Tags | Java Version | Ubuntu Version | Architecture | LTS |
 | ---- | ------------ | -------------- | ------------ | --- |
-| `17`,`17.0.12`,`17-noble`,`17.0.12-noble`,`17-jammy`,`17.0.12-jammy` | 17.0.12+8.1 | 24.04 (Noble Numbat), 22.04 (Jammy Jellyfish) | x86_64, aarch64 | Yes |
-| `21`,`21.0.4`,`21-noble`,`21.0.4-noble`,`21-jammy`,`21.0.4-jammy` | 21.0.4+8.1 | 24.04 (Noble Numbat), 22.04 (Jammy Jellyfish) | x86_64, aarch64 | Yes |
-| `22`,`22.0.2`,`22-noble`,`22.0.2-noble`,`22-jammy`,`22.0.2-jammy` | 22.0.2+9.1 | 24.04 (Noble Numbat), 22.04 (Jammy Jellyfish) | x86_64, aarch64 | No |
+| `17`,`17.0.12`,`17-noble`,`17.0.12-noble`,`17-jammy`,`17.0.12-jammy` | 17.0.12+8.2 | 24.04 (Noble Numbat), 22.04 (Jammy Jellyfish) | x86_64, aarch64 | Yes |
+| `21`,`21.0.5`,`21-noble`,`21.0.5-noble`,`21-jammy`,`21.0.5-jammy` | 21.0.5+9.1 | 24.04 (Noble Numbat), 22.04 (Jammy Jellyfish) | x86_64, aarch64 | Yes |
+| `23`,`23.0.1`,`23-noble`,`23.0.1-noble`,`23-jammy`,`23.0.1-jammy` | 23.0.1+11.1 | 24.04 (Noble Numbat), 22.04 (Jammy Jellyfish) | x86_64, aarch64 | No |
 
 The tags without the suffix `-jammy` or `-noble` are based on the latest Ubuntu LTS version (Ubuntu 24.04) and the tags with the suffix `-jammy` or `-noble` are based on their respective Ubuntu version.
 
