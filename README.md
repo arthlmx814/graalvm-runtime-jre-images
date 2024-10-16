@@ -26,7 +26,7 @@ The tags without the suffix `-jammy` or `-noble` are based on the latest Ubuntu 
 You can use the GraalVM Java JRE Docker images like any other Docker image. For example, you can use the following command get the version of the java executable:
 
 ```shell
-docker run --rm arthlmx814/graalvm-jre:22 -version
+docker run --rm arthlmx814/graalvm-jre:23 -version
 ```
 
 ## FAQ
@@ -102,18 +102,18 @@ I use a GitHub action to build the GraalVM Java JRE Docker images every week on 
 
 This is to avoid any security issues that might be present in the JDK or in the base image.
 
-My GitHub action fetches automatically the latest version of the GraalVM Java JDK (17, 21 and 22) and builds them.
+My GitHub action fetches automatically the latest version of the GraalVM Java JDK (17, 21 and 23) and builds them.
 
 ### Do you provide a "latest" tag for the GraalVM Java JRE Docker images?
 
 No, bacause there is no sense to use a "latest" tag with java versions.
 Even if the JVM is backward compatible, some applications might not work as expected with a newer version of the JVM.
-The "latest" is the major version of the JDK. (like 17, 21 or 22 in the case of GraalVM Java)
+The "latest" is the major version of the JDK. (like 17, 21 or 23 in the case of GraalVM Java)
 
 ### What versions of GraalVM Java do you provide?
 
 I provide the latest and long-term support (LTS) versions of GraalVM Java.
-Today, the LTS versions are 17 and 21. The latest version is 22.
+Today, the LTS versions are 17 and 21. The latest version is 23.
 
 I do not provide the early access (EA) versions of GraalVM Java because they are not recommended for production use.
 
@@ -152,6 +152,10 @@ My GitHub repository: <https://github.com/arthlmx814/graalvm-runtime-jre-images>
 My Docker Hub repository: <https://hub.docker.com/r/arthlmx814/graalvm-jre>
 
 Oracle GraalVM: <https://www.graalvm.org/>
+
+Oracle GraalVM Free Terms and Conditions (GFTC): <https://www.oracle.com/downloads/licenses/graal-free-license.html>
+
+Eclipse Temurin: <https://adoptium.net/temurin/>
 
 Oracle GraalVM Free Terms and Conditions (GFTC): <https://www.oracle.com/downloads/licenses/graal-free-license.html>
 
