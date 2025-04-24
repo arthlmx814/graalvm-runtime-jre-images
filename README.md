@@ -13,10 +13,11 @@ All the images have the java executable in the PATH and the JAVA_HOME environmen
 ## Supported Tags
 
 The images are available on [Docker Hub](https://hub.docker.com/r/arthlmx814/graalvm-jre) with the following tags:
+
 | Tags | Java Version | Ubuntu Version | Architecture | LTS |
 | ---- | ------------ | -------------- | ------------ | --- |
-| `21`,`21.0.6`,`21-noble`,`21.0.6-noble`,`21-jammy`,`21.0.6-jammy` | 21.0.6+8.1 | 24.04 (Noble Numbat), 22.04 (Jammy Jellyfish) | x86_64, aarch64 | Yes |
-| `23`,`23.0.2`,`23-noble`,`23.0.2-noble`,`23-jammy`,`23.0.2-jammy` | 23.0.2+7.1 | 24.04 (Noble Numbat), 22.04 (Jammy Jellyfish) | x86_64, aarch64 | No |
+| `21`,`21.0.7`,`21-noble`,`21.0.7-noble`,`21-jammy`,`21.0.7-jammy` | 21.0.7+8.1 | 24.04 (Noble Numbat), 22.04 (Jammy Jellyfish) | x86_64, aarch64 | Yes |
+| `24`,`24.0.2`,`24-noble`,`24.0.1-noble`,`24-jammy`,`24.0.1-jammy` | 24.0.1+9.1 | 24.04 (Noble Numbat), 22.04 (Jammy Jellyfish) | x86_64, aarch64 | No |
 
 The tags without the suffix `-jammy` or `-noble` are based on the latest Ubuntu LTS version (Ubuntu 24.04) and the tags with the suffix `-jammy` or `-noble` are based on their respective Ubuntu version.
 
@@ -25,7 +26,7 @@ The tags without the suffix `-jammy` or `-noble` are based on the latest Ubuntu 
 You can use the GraalVM Java JRE Docker images like any other Docker image. For example, you can use the following command get the version of the java executable:
 
 ```shell
-docker run --rm arthlmx814/graalvm-jre:23 -version
+docker run --rm arthlmx814/graalvm-jre:24 -version
 ```
 
 ## FAQ
@@ -101,18 +102,18 @@ I use a GitHub action to build the GraalVM Java JRE Docker images every week on 
 
 This is to avoid any security issues that might be present in the JDK or in the base image.
 
-My GitHub action fetches automatically the latest version of the GraalVM Java JDK (21 and 23) and builds them.
+My GitHub action fetches automatically the latest version of the GraalVM Java JDK (21 and 24) and builds them.
 
 ### Do you provide a "latest" tag for the GraalVM Java JRE Docker images?
 
 No, bacause there is no sense to use a "latest" tag with java versions.
 Even if the JVM is backward compatible, some applications might not work as expected with a newer version of the JVM.
-The "latest" is the major version of the JDK. (like 21 or 23 in the case of GraalVM Java)
+The "latest" is the major version of the JDK. (like 21 or 24 in the case of GraalVM Java)
 
 ### What versions of GraalVM Java do you provide?
 
 I provide the latest and long-term support (LTS) versions of GraalVM Java.
-Today, the (supported and free) LTS version is 21. The latest version is 23.
+Today, the (supported and free) LTS version is 21. The latest version is 24.
 
 I do not provide the early access (EA) versions of GraalVM Java because they are not recommended for production use.
 
