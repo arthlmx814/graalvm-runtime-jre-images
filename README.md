@@ -156,7 +156,3 @@ Oracle GraalVM: <https://www.graalvm.org/>
 Oracle GraalVM Free Terms and Conditions (GFTC): <https://www.oracle.com/downloads/licenses/graal-free-license.html>
 
 Eclipse Temurin: <https://adoptium.net/temurin/>
-
-Oracle GraalVM Free Terms and Conditions (GFTC): <https://www.oracle.com/downloads/licenses/graal-free-license.html>
-
-Eclipse Temurin: <https://adoptium.net/temurin/>
